@@ -28,11 +28,11 @@ public class FirebaseStorageServiceImpl implements FirebaseStorageService {
     }
 
     @Override
-    public String save(MultipartFile file) throws IOException {
+    public String save(MultipartFile file, String folder) throws IOException {
 
         Bucket bucket = StorageClient.getInstance().bucket();
 
-        String name = generateFileName(file.getOriginalFilename());
+        String name = folder + "/" + generateFileName(file.getOriginalFilename());
 
         bucket.create(name, file.getBytes(), file.getContentType());
         return name;
@@ -63,10 +63,9 @@ public class FirebaseStorageServiceImpl implements FirebaseStorageService {
 
         Blob blob = bucket.get(name);
 
-        if (blob == null) {
-            throw new IOException("file not found");
+        if (blob != null) {
+            blob.delete();
         }
 
-        blob.delete();
     }
 }

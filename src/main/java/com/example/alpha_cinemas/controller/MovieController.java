@@ -35,7 +35,7 @@ public class MovieController {
 
     @GetMapping("/movie-detail/{id}")
     public ResponseEntity<ApiResponse<MovieResponse>> getMovieAMovie(@PathVariable Long id) {
-       MovieResponse response = movieService.handleGetAMovie(id);
+        MovieResponse response = movieService.handleGetAMovie(id);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ApiResponse<>(HttpStatus.OK.value(), "Ok !", response, null));
     }
@@ -50,6 +50,18 @@ public class MovieController {
                 .body(new ApiResponse<>(HttpStatus.OK.value(), "Ok !", response.get("content"), response.get("pagination")));
     }
 
+    @GetMapping(value = "/movies", params = {"status","theater"})
+    public ResponseEntity<ApiResponse<?>> getMoviesByStatusTheater
+            (@RequestParam("status") Status status,
+             @RequestParam("theater") String theater,
+             @ModelAttribute PaginationRequest paginationRequest
+            ) {
+
+        Set<MovieResponse> response = movieService.handleGetMoviesByStatusAndTheater(status,theater, paginationRequest);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ApiResponse<>(HttpStatus.OK.value(), "Ok !", response, null));
+    }
+
     @PostMapping(value = "/movies")
     public ResponseEntity<ApiResponse<MovieResponse>> createMovie(@Valid @ModelAttribute MovieRequest payload) throws IOException {
         MovieResponse response = movieService.handleCreateMovie(payload);
@@ -58,15 +70,21 @@ public class MovieController {
     }
 
     @PatchMapping("/movies/{id}")
-    public ResponseEntity<ApiResponse<MovieResponse>> updateMovie(@Valid @ModelAttribute MovieRequest payload, @PathVariable Long id) {
+    public ResponseEntity<ApiResponse<MovieResponse>> updateMovie
+            (@Valid @ModelAttribute MovieRequest payload, @PathVariable Long id)
+            throws IOException {
         MovieResponse response = movieService.handleUpdateMovie(id, payload);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ApiResponse<>(HttpStatus.OK.value(), "Updated !", response, null));
     }
 
-    @DeleteMapping("/movies/{id}")
-    public ResponseEntity<ApiResponse<?>> deleteMovie(@PathVariable Long id) {
-        movieService.handleDeleteMovie(id);
+    @DeleteMapping(value = "/movies/{id}", params = "type")
+    public ResponseEntity<ApiResponse<?>> softDeleteMovie(@PathVariable Long id, @RequestParam("type") String type) throws IOException {
+        if (type.equals("soft")) {
+            movieService.handleSoftDeleteMovie(id);
+        } else {
+            movieService.handleHardDeleteMovie(id);
+        }
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ApiResponse<>(HttpStatus.OK.value(), "Deleted !", null, null));
     }

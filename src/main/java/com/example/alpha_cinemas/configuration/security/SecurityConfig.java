@@ -58,6 +58,9 @@ public class SecurityConfig {
                         .requestMatchers("/categories").permitAll()
                         .requestMatchers("/categories/{id}").permitAll()
 
+                        //user
+                        .requestMatchers("/users").permitAll()
+
                         //movie
                         .requestMatchers("/movies").permitAll()
                         .requestMatchers("/movies/{id}").permitAll()
@@ -67,6 +70,22 @@ public class SecurityConfig {
 
                         //theater
                         .requestMatchers("/theaters").permitAll()
+                        .requestMatchers("/theaters/{id}").permitAll()
+
+                        //room
+                        .requestMatchers("/rooms").permitAll()
+                        .requestMatchers("/rooms/type").permitAll()
+
+                        //seat
+                        .requestMatchers("/seats").permitAll()
+                        .requestMatchers("/seats/type").permitAll()
+                        .requestMatchers("/seats/room/{id}").permitAll()
+
+                        //schedule
+                        .requestMatchers("/schedules").permitAll()
+                        .requestMatchers("/schedules/days").permitAll()
+                        .requestMatchers("/schedules/{id}").permitAll()
+
 
 
                         .anyRequest().authenticated()

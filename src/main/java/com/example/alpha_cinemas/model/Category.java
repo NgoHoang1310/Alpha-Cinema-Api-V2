@@ -2,6 +2,7 @@ package com.example.alpha_cinemas.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,6 +20,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity(name = "category")
 @Builder
+@JsonIgnoreProperties({"createdAt","updatedAt", "movies"})
 public class Category extends BaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

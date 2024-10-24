@@ -1,7 +1,7 @@
 package com.example.alpha_cinemas.mapper;
 
-import com.example.alpha_cinemas.dto.request.CategoryRequest;
-import com.example.alpha_cinemas.model.Category;
+import com.example.alpha_cinemas.dto.request.RoomRequest;
+import com.example.alpha_cinemas.model.Room;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
@@ -11,19 +11,20 @@ import org.springframework.stereotype.Component;
     comments = "version: 1.6.0, compiler: javac, environment: Java 22.0.2 (Oracle Corporation)"
 )
 @Component
-public class CategoryMapperImpl implements CategoryMapper {
+public class RoomMapperImpl implements RoomMapper {
 
     @Override
-    public Category toEntity(CategoryRequest request) {
+    public Room toEntity(RoomRequest request) {
         if ( request == null ) {
             return null;
         }
 
-        Category.CategoryBuilder category = Category.builder();
+        Room.RoomBuilder room = Room.builder();
 
-        category.id( request.getId() );
-        category.name( request.getName() );
+        room.id( request.getId() );
+        room.name( request.getName() );
+        room.capacity( request.getCapacity() );
 
-        return category.build();
+        return room.build();
     }
 }

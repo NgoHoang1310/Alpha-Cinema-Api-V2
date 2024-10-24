@@ -1,9 +1,12 @@
 package com.example.alpha_cinemas.mapper;
 
-import com.example.alpha_cinemas.dto.request.MovieRequest;
+import com.example.alpha_cinemas.dto.request.ScheduleRequest;
 import com.example.alpha_cinemas.dto.response.MovieResponse;
+import com.example.alpha_cinemas.dto.response.ScheduleResponse;
 import com.example.alpha_cinemas.model.Category;
 import com.example.alpha_cinemas.model.Movie;
+import com.example.alpha_cinemas.model.Schedule;
+import java.time.LocalTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.annotation.processing.Generated;
@@ -15,37 +18,49 @@ import org.springframework.stereotype.Component;
     comments = "version: 1.6.0, compiler: javac, environment: Java 22.0.2 (Oracle Corporation)"
 )
 @Component
-public class MovieMapperImpl implements MovieMapper {
+public class ScheduleMapperImpl implements ScheduleMapper {
 
     @Override
-    public Movie toEntity(MovieRequest request) {
+    public Schedule toEntity(ScheduleRequest request) {
         if ( request == null ) {
             return null;
         }
 
-        Movie.MovieBuilder movie = Movie.builder();
+        Schedule.ScheduleBuilder schedule = Schedule.builder();
 
-        movie.category( map( request.getCategory() ) );
-        movie.title( request.getTitle() );
-        movie.duration( request.getDuration() );
-        movie.hot( request.isHot() );
-        movie.trailer( request.getTrailer() );
-        movie.limitation( request.getLimitation() );
-        movie.status( request.getStatus() );
-        movie.language( request.getLanguage() );
-        movie.director( request.getDirector() );
-        movie.cast( request.getCast() );
-        movie.description( request.getDescription() );
-        movie.releaseDate( request.getReleaseDate() );
-        movie.destroyed( request.isDestroyed() );
-        movie.createdAt( request.getCreatedAt() );
-        movie.updatedAt( request.getUpdatedAt() );
+        schedule.id( request.getId() );
+        schedule.date( request.getDate() );
+        Set<LocalTime> set = request.getTimes();
+        if ( set != null ) {
+            schedule.times( new LinkedHashSet<LocalTime>( set ) );
+        }
 
-        return movie.build();
+        return schedule.build();
     }
 
     @Override
-    public MovieResponse toDto(Movie movie) {
+    public ScheduleResponse toDto(Schedule schedule) {
+        if ( schedule == null ) {
+            return null;
+        }
+
+        ScheduleResponse scheduleResponse = new ScheduleResponse();
+
+        scheduleResponse.setId( schedule.getId() );
+        scheduleResponse.setMovie( movieToMovieResponse( schedule.getMovie() ) );
+        scheduleResponse.setDate( schedule.getDate() );
+        Set<LocalTime> set = schedule.getTimes();
+        if ( set != null ) {
+            scheduleResponse.setTimes( new LinkedHashSet<LocalTime>( set ) );
+        }
+        scheduleResponse.setRoom( schedule.getRoom() );
+        scheduleResponse.setCreatedAt( schedule.getCreatedAt() );
+        scheduleResponse.setUpdatedAt( schedule.getUpdatedAt() );
+
+        return scheduleResponse;
+    }
+
+    protected MovieResponse movieToMovieResponse(Movie movie) {
         if ( movie == null ) {
             return null;
         }

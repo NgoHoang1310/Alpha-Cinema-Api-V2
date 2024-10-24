@@ -2,6 +2,8 @@ package com.example.alpha_cinemas.model;
 
 import com.example.alpha_cinemas.enums.Limitation;
 import com.example.alpha_cinemas.enums.Status;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -27,7 +29,7 @@ public class Movie {
     private Long duration;
     private boolean hot;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "movie_category",
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
@@ -45,8 +47,9 @@ public class Movie {
     private Date releaseDate;
     @Column(name = "destroyed", columnDefinition = "false")
     private boolean destroyed;
-    @OneToOne(mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Schedule schedule;
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Set<Schedule> schedule = new HashSet<>();
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp

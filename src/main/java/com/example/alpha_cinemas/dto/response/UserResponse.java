@@ -32,6 +32,7 @@ public class UserResponse {
     private Date dob;
     @JsonIgnore
     private Set<Role> roles = new HashSet<>();
+    private boolean isDestroyed;
     @JsonProperty("roles")
     private Set<String> rolesString = new HashSet<>();
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")

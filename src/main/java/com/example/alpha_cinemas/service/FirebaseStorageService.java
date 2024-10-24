@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface FirebaseStorageService {
     String getImageUrl(String name);
 
-    String save(MultipartFile file) throws IOException;
+    String save(MultipartFile file, String folder) throws IOException;
 
     String save(BufferedImage bufferedImage, String originalFileName) throws IOException;
 

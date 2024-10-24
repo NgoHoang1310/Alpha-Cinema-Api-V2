@@ -20,7 +20,6 @@ public class RedisServiceImpl implements RedisService {
 
     @Override
     public void save(Object token, String userId){
-        System.out.println(userId);
         redisTemplate.opsForValue().set(userId,token);
     }
 
@@ -33,7 +32,6 @@ public class RedisServiceImpl implements RedisService {
         Map<String, Object> allRecords = new HashMap<>();
         // Lấy tất cả các keys trong Redis
         Set<String> keys = redisTemplate.keys("16");
-        System.out.println(keys);
         if (keys != null) {
             for (String key : keys) {
                 Object value = redisTemplate.opsForValue().get(key);

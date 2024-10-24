@@ -18,6 +18,12 @@ public enum ApiErrorCode {
     NO_MOVIE(204, "Not have any movies !"),
     MOVIE_NOT_FOUND(404, "Movie not found !"),
 
+    //room
+    ROOM_NOT_FOUND(404, "Room not found !"),
+    //schedule
+    SCHEDULE_EXISTED(409, "This schedule has already been existed !"),
+    SCHEDULE_NOT_FOUND(404, "Schedule not found !"),
+
     //category
     CATEGORY_NOT_FOUND(404, "Category not found !"),
 
